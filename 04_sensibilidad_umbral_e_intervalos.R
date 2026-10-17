@@ -41,7 +41,8 @@ source("00_configuracion.R")
 for (p in c("gbm", "ranger"))
   if (!instalar_bin(p)) stop("No se pudo instalar el paquete ", p, ": install.packages('", p, "')")
 
-B_BOOT             <- 1000    # réplicas bootstrap
+DEFINICIONES <- c("p75", "p90", "media2de")   # definiciones de brote que se comparan
+B_BOOT       <- 1000                          # réplicas bootstrap
 
 # -----------------------------------------------------------------------------
 # 1. Tabla departamento-semana y etiquetas de brote
@@ -164,7 +165,7 @@ for (def in DEFINICIONES) {
     frac_alerta <- mean(tr$brote)
     cat(sprintf("Entrenamiento: %d (brotes %.1f%%) | Prueba: %d (brotes %.1f%%)\n",
                 nrow(tr), 100 * mean(tr$brote), nrow(te), 100 * mean(te$brote)))
-
+    
     scores <- list()
     for (con_clima in c(FALSE, TRUE)) {
       vars <- if (con_clima) vars_cli else vars_aut
@@ -181,7 +182,7 @@ for (def in DEFINICIONES) {
     }
     # Referencia sin aprendizaje: persistencia (¿hubo brote hace h semanas?)
     scores[["persistencia"]] <- te$brote_l + 1e-6 * te$c_lag
-
+    
     # Métricas puntuales
     y <- te$brote
     res <- bind_rows(lapply(names(scores), function(nm) {
@@ -194,14 +195,14 @@ for (def in DEFINICIONES) {
              lift = (sum(alerta & y == 1) / sum(alerta)) / mean(y),
              prev_entrenamiento = mean(tr$brote), prev_prueba = mean(y))
     }))
-
+    
     # Intervalos de confianza por bootstrap de bloques de semanas
     cat("Bootstrap de bloques de semanas...\n")
     bt <- boot_auc(te, scores, B_BOOT)
     ic <- t(apply(bt, 2, quantile, probs = c(0.025, 0.975)))
     res <- res |> left_join(tibble(modelo = colnames(bt), AUC_lo = ic[, 1], AUC_hi = ic[, 2]),
                             by = "modelo")
-
+    
     # Diferencias de AUC con su intervalo
     dif <- bind_rows(lapply(pares, function(p) {
       dd <- bt[, p[1]] - bt[, p[2]]

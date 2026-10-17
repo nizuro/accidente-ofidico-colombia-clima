@@ -1,0 +1,18 @@
+# Datos y resultados que se regeneran con el código
+dataset_modelado.csv
+dataset_modelado_brotes.rds
+resultados_R/
+ckpt_*.rds
+*.gpkg
+
+# Datos crudos (se descargan de las fuentes originales)
+SIVIGILA/
+POBLACION/
+CHIRPS/
+ERA5/
+
+# Archivos de R y del sistema
+.Rhistory
+.RData
+.Rproj.user/
+.DS_Store

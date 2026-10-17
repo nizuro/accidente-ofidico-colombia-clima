@@ -18,7 +18,7 @@ Código del Trabajo Fin de Máster del Máster en Big Data y Ciencia de Datos (U
 
 ## Uso de inteligencia artificial generativa
 
-El trabajo contó con el apoyo de Claude (Anthropic, 2026) en la redacción preliminar, la escritura y revisión del código y la comprobación de referencias, con el consentimiento del director. El registro de los prompts utilizados, con fecha y propósito, está en [`transparencia_ia/prompts_utilizados.md`](transparencia_ia/prompts_utilizados.md). Todos los resultados provienen de la ejecución del código sobre los datos originales.
+El trabajo contó con el apoyo de Claude (Anthropic, 2026) en la redacción preliminar, la escritura y revisión del código y la comprobación de referencias. El registro de los prompts utilizados, con fecha y propósito, está en [`transparencia_ia/prompts_utilizados.md`](transparencia_ia/prompts_utilizados.md). Todos los resultados provienen de la ejecución del código sobre los datos originales.
 
 ## Datos
 
